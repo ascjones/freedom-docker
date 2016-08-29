@@ -1,0 +1,8 @@
+.git
+.gitignore
+LICENSE
+VERSION
+docker-compose.yml
+*.jpg
+*.JPG
+*.png
