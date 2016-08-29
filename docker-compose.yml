@@ -9,6 +9,8 @@ services:
         volumes_from:
             - wedding_src
         command: bower install
+        depends_on:
+            - wedding_src
 
     wedding_photos_capetown:
         build: ./wedding/photos        
@@ -17,6 +19,8 @@ services:
         volumes_from:
             - wedding_build
         command: html capetown
+        depends_on:
+            - wedding_src
 
     wedding_photos_london:
         build: ./wedding/photos        
@@ -25,6 +29,8 @@ services:
         volumes_from:
             - wedding_build
         command: html london
+        depends_on:
+            - wedding_src
 
 #    blog:
 #        build: ./myblog-docker
@@ -37,7 +43,10 @@ services:
             - 443:443
         volumes_from:
 #            - blog
-            - wedding_photos_capetown
             - wedding_src
+            - wedding_photos_capetown
+            - wedding_photos_london
         depends_on:
             - wedding_src
+            - wedding_photos_capetown
+            - wedding_photos_london
