@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+    wedding_src:
+        build: ./wedding
+
+    wedding_build:
+        build: ./wedding/build
+        volumes_from:
+            - wedding_src
+        command: bower install
+
+    wedding_photos_capetown:
+        build: ./wedding/photos        
+        volumes:
+            - ./wedding/photos/capetown:/var/www/html/capetown/photos
+        volumes_from:
+            - wedding_build
+        command: html capetown
+
+    wedding_photos_london:
+        build: ./wedding/photos        
+        volumes:
+            - ./wedding/photos/london:/var/www/html/london/photos
+        volumes_from:
+            - wedding_build
+        command: html london
+
+#    blog:
+#        build: ./myblog-docker
+
+    nginx:
+        restart: always
+        build: ./nginx-docker
+        ports: 
+            - 80:80
+            - 443:443
+        volumes_from:
+#            - blog
+            - wedding_photos_capetown
+            - wedding_src
+        depends_on:
+            - wedding_src
